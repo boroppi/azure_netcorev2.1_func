@@ -28,11 +28,12 @@ namespace Company.Function
 
             var workOrder = ParseTextIntoObject.TextToParse(requestBody);
 
+            var script = GenerateSqlScript.WorkOrderToSqlInsertScript(workOrder);
 
             var json = JsonConvert.SerializeObject(workOrder);
 
-            return json != null
-                         ? (ActionResult)new OkObjectResult(json)
+            return script != null
+                         ? (ActionResult)new OkObjectResult(script)
                             : new BadRequestObjectResult("something went wrong");
             //  return name != null
             //    ? (ActionResult)new OkObjectResult($"Hello, {name}")

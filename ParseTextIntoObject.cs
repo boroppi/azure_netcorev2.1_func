@@ -19,8 +19,9 @@ namespace Company.Function
             const string users_expr = @"\s*User\(s\) to be added:\s*([^\n\r]*)";
             const string cost_centre_expr = @"\s*Cost Centre:\s*([^\n\r]*)";
             const string server_trim_label_expr = @"\s*Server\(s\) to be added:\s*";
-            const string servers_split_expr = @"/\s*,\s*/";
+            const string servers_split_expr = @"\s*,\s*";
             const string users_split_expr = @"(?<=\))\,\s";
+            const string users_with_no_department_split_expr = @"\s*,\s*";
 
             try
             {
@@ -59,7 +60,15 @@ namespace Company.Function
                 }
 
                 // Users array to object
-                string[] arrUsers = RegexFind.Split(users, users_split_expr);
+                string[] arrUsers;
+                if (users.Contains('(') && users.Contains(')'))
+                {
+                    arrUsers = RegexFind.Split(users, users_split_expr);
+                }
+                else
+                {
+                    arrUsers = RegexFind.Split(users, users_with_no_department_split_expr);
+                }
                 foreach (var user in arrUsers)
                 {
                     requestDetail.Users.Add(new User { Name = user });
@@ -75,10 +84,6 @@ namespace Company.Function
                 System.Console.WriteLine($"ERROR: {e.Message}");
                 throw e;
             }
-
-
         }
     }
-
-
 }
