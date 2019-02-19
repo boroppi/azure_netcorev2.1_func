@@ -30,6 +30,19 @@ namespace Company.Function
 
             return m.Value;
         }
+
+        public static string[] Split(string input, string pattern)
+        {
+            try
+            {
+                return Regex.Split(input, pattern);
+            }
+            catch (System.Exception e)
+            {
+                System.Console.WriteLine(e.Message);
+                throw e;
+            }
+        }
     }
 
 

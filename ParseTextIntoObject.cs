@@ -18,6 +18,9 @@ namespace Company.Function
             const string servers_expr = @"\s*Server\(s\) to be added:[\s\w,]*(?=\nUser)";
             const string users_expr = @"\s*User\(s\) to be added:\s*([^\n\r]*)";
             const string cost_centre_expr = @"\s*Cost Centre:\s*([^\n\r]*)";
+            const string server_trim_label_expr = @"\s*Server\(s\) to be added:\s*";
+            const string servers_split_expr = @"/\s*,\s*/";
+            const string users_split_expr = @"(?<=\))\,\s";
 
             try
             {
@@ -47,9 +50,20 @@ namespace Company.Function
                 requestDetail.Role = role;
 
 
-                // TODO: Servers and USERS
-                requestDetail.Servers = null;
-                requestDetail.Users = null;
+                // Servers array to object
+                servers = RegexFind.Split(servers, server_trim_label_expr)[1];
+                string[] arrServers = RegexFind.Split(servers, servers_split_expr);
+                foreach (var server in arrServers)
+                {
+                    requestDetail.Servers.Add(new Server { Name = server });
+                }
+
+                // Users array to object
+                string[] arrUsers = RegexFind.Split(users, users_split_expr);
+                foreach (var user in arrUsers)
+                {
+                    requestDetail.Users.Add(new User { Name = user });
+                }
 
                 var workOrder = new WorkOrder(workorder_id, approver, requester, item_requested,
                 request_type, requestDetail, cost_centre);

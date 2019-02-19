@@ -42,8 +42,15 @@ namespace Company.Function
     {
         public string ClusterName { get; set; }
         public string Role { get; set; }
-        public ICollection<Server> Servers { get; set; }
-        public ICollection<User> Users { get; set; }
+        public ICollection<Server> Servers { get; private set; }
+        public ICollection<User> Users { get; private set; }
+
+        // Initialize an empty List for Servers and Users the first time RequestDetail is instantiated
+        public RequestDetail()
+        {
+            this.Servers = new List<Server>();
+            this.Users = new List<User>();
+        }
     }
 
     public class Server
