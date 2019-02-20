@@ -30,7 +30,7 @@ namespace Company.Function
 
             var script = GenerateSqlScript.WorkOrderToSqlInsertScript(workOrder);
 
-            var json = JsonConvert.SerializeObject(workOrder);
+            //var json = JsonConvert.SerializeObject(workOrder);
 
             return script != null
                          ? (ActionResult)new OkObjectResult(script)
