@@ -1,37 +1,30 @@
 using System;
 using System.Data.SqlClient;
 using System.Text;
+using Microsoft.Extensions.Logging;
 
 namespace Company.Function
 {
     public static class InsertIntoSql
     {
 
-        public static string WorkOrderInsert(WorkOrder workOrder)
+        public static string WorkOrderInsert(WorkOrder workOrder) 
         {
 
             try 
             { 
                 Console.WriteLine("\nConnecting to SQL database");
-                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+               // log.LogInformation($"Connecting to SQL database");
+                
+                var str = Environment.GetEnvironmentVariable("sqldb_connection");
 
-            
-               // Just documenting this here
-               //CREATE LOGIN sql_azure_function WITH PASSWORD = '24Password24#' 
-               //CREATE USER sql_azure_function_user FROM LOGIN sql_azure_function;
-               //ALTER ROLE db_datawriter ADD MEMBER sql_azure_function_user
-
-                builder.DataSource = "dco-tools.database.windows.net"; 
-                builder.UserID = "sql_azure_function_user";            
-                builder.Password = "24Password24#";     
-                builder.InitialCatalog = "repo";
-
-                using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
+                using (SqlConnection connection = new SqlConnection(str))
                  {
 
                 connection.Open(); 
 
                 string script = "";
+               //int rows = 0;
             
 
                 foreach (var server in workOrder.RequestDetails.Servers)
@@ -39,17 +32,14 @@ namespace Company.Function
                     foreach (var user in workOrder.RequestDetails.Users)
                     {
                     
-                    script = $"INSERT INTO [dbo].[Process] ([server],[user_name],[role],[action]) VALUES ('{server.Name}','{user.Name}','{workOrder.RequestDetails.Role}','ADD')";
-        
-
-                     SqlCommand command = new SqlCommand(script, connection);
-                    command.Connection.Open();
-                    command.ExecuteNonQuery();
-
-                    Console.WriteLine(script.ToString());
+                        script = $"INSERT INTO [dbo].[Process] ([server],[user_name],[role],[action]) VALUES ('{server.Name}','{user.Name}','{workOrder.RequestDetails.Role}','ADD')";
+                        using (SqlCommand cmd = new SqlCommand(script, connection))
                     
-                    command.Connection.Close();
-
+                        {
+                        // Execute the command and log the # rows affected.
+                        var rows = cmd.ExecuteNonQuery();
+                        Console.WriteLine ($"{rows} rows were updated");
+                        }             
                             
                     }
                 }

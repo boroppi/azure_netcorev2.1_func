@@ -26,11 +26,11 @@ namespace Company.Function
             // name = name ?? data?.name;
 
             var workOrder = ParseTextIntoObject.TextToParse(requestBody);
+    
+            log.LogInformation("Connecting to SQL database");
+            var script2 = InsertIntoSql.WorkOrderInsert(workOrder);
 
             var script = GenerateSqlScript.WorkOrderToSqlInsertScript(workOrder);
-
-           Console.WriteLine("Connecting to SQL database");
-            var script2 = InsertIntoSql.WorkOrderInsert(workOrder);
 
             //var json = JsonConvert.SerializeObject(workOrder);
 
