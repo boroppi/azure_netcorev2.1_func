@@ -41,16 +41,24 @@ namespace Company.Function
                     
                     script = $"INSERT INTO [dbo].[Process] ([server],[user_name],[role],[action]) VALUES ('{server.Name}','{user.Name}','{workOrder.RequestDetails.Role}','ADD')";
         
-                    using (SqlCommand command = new SqlCommand(script, connection))
-                    {
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                Console.WriteLine("{0} {1}", reader.GetString(0), reader.GetString(1));
-                            }
-                        }
-                    }       
+
+                     SqlCommand command = new SqlCommand(script, connection);
+                    command.Connection.Open();
+                    command.ExecuteNonQuery();
+
+                    command.Connection.Close();
+
+                    //using (SqlCommand command = new SqlCommand(script, connection))
+                    //{
+                        
+                        //using (SqlDataReader reader = command.ExecuteReader())
+                        //{
+                        //  while (reader.Read())
+                        //                            {
+                        //                              Console.WriteLine("{0} {1}", reader.GetString(0), reader.GetString(1));
+                        //                        }
+                        //                  }
+                   // }       
 
                 
                     }
