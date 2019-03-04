@@ -29,27 +29,51 @@ namespace Company.Function
                 using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
                  {
 
+                connection.Open(); 
+
+                string script = "";
+            
+
+                foreach (var server in workOrder.RequestDetails.Servers)
+                {
+                    foreach (var user in workOrder.RequestDetails.Users)
+                    {
+                    
+                    script = $"INSERT INTO [dbo].[Process] ([server],[user_name],[role],[action]) VALUES ('{server.Name}','{user.Name}','{workOrder.RequestDetails.Role}','ADD')";
+        
+                    using (SqlCommand command = new SqlCommand(script, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Console.WriteLine("{0} {1}", reader.GetString(0), reader.GetString(1));
+                            }
+                        }
+                    }       
+
+                
+                    }
+                }
+
+
+
+
+
+
                  }
             }
             catch (SqlException e)
             {
                 Console.WriteLine(e.ToString());
+            
             }
             Console.WriteLine("\nDone. Press enter.");
             Console.ReadLine(); 
         
+      
 
-            string script = "";
-
-            foreach (var server in workOrder.RequestDetails.Servers)
-            {
-                foreach (var user in workOrder.RequestDetails.Users)
-                {
-                  //  script += $"INSERT INTO [dbo].[Process] ([server],[user_name],[role],[action]) VALUES ('{server.Name}','{user.Name}','{workOrder.RequestDetails.Role}','ADD');\n";
-                }
-            }
-
-            return script;
+            return "true";
         }
     }
 }
