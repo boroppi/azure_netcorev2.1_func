@@ -30,6 +30,8 @@ namespace Company.Function
 
             var script = GenerateSqlScript.WorkOrderToSqlInsertScript(workOrder);
 
+            var script2 = InsertIntoSql.WorkOrderInsert(workOrder);
+
             //var json = JsonConvert.SerializeObject(workOrder);
 
             return script != null
@@ -38,6 +40,7 @@ namespace Company.Function
             //  return name != null
             //    ? (ActionResult)new OkObjectResult($"Hello, {name}")
             //   : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
+   
         }
     }
 }
