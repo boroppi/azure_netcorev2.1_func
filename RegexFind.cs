@@ -23,8 +23,8 @@ namespace Company.Function
             }
             else
             {
-                System.Console.WriteLine($"Error: could not find {searchingFor}");
-                throw new System.Exception($"Error: could not find {searchingFor}");
+                System.Console.WriteLine($"Error : could not find {searchingFor}");
+                throw new System.Exception($"Error : could not find {searchingFor}");
             }
 
 
