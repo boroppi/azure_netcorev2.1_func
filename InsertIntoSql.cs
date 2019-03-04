@@ -46,6 +46,8 @@ namespace Company.Function
                     command.Connection.Open();
                     command.ExecuteNonQuery();
 
+                    Console.WriteLine(script.ToString());
+                    
                     command.Connection.Close();
 
                     //using (SqlCommand command = new SqlCommand(script, connection))
