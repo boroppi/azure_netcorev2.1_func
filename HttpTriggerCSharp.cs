@@ -7,6 +7,8 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System.Data.SqlClient;
+
 
 
 namespace Company.Function
@@ -28,7 +30,22 @@ namespace Company.Function
             var workOrder = ParseTextIntoObject.TextToParse(requestBody);
     
             log.LogInformation("Connecting to SQL database");
-            var script2 = InsertIntoSql.WorkOrderInsert(workOrder);
+            //var script2 = InsertIntoSql.WorkOrderInsert(workOrder);
+  
+            var str = Environment.GetEnvironmentVariable("sqldb_connection");
+            using (SqlConnection conn = new SqlConnection(str))
+            {
+                conn.Open();
+                var text = "UINSERT INTO [dbo].[Process] ([server],[user_name],[role],[action]) VALUES ('cysbigdcdbmsq06','Nguyen, Brian (MCCSS)','WinFullAdmin','ADD');";
+
+                using (SqlCommand cmd = new SqlCommand(text, conn))
+                {
+                    // Execute the command and log the # rows affected.
+                    var rows = await cmd.ExecuteNonQueryAsync();
+                    log.LogInformation($"{rows} rows were updated");
+                }
+                }
+
 
             var script = GenerateSqlScript.WorkOrderToSqlInsertScript(workOrder);
 
