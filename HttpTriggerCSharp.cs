@@ -36,7 +36,7 @@ namespace Company.Function
             using (SqlConnection conn = new SqlConnection(str))
             {
                 conn.Open();
-                var text = "UINSERT INTO [dbo].[Process] ([server],[user_name],[role],[action]) VALUES ('cysbigdcdbmsq06','Nguyen, Brian (MCCSS)','WinFullAdmin','ADD');";
+                var text = "INSERT INTO [dbo].[Process] ([server],[user_name],[role],[action]) VALUES ('cysbigdcdbmsq06','Nguyen, Brian (MCCSS)','WinFullAdmin','ADD');";
 
                 using (SqlCommand cmd = new SqlCommand(text, conn))
                 {
