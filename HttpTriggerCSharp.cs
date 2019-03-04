@@ -29,6 +29,7 @@ namespace Company.Function
 
             var script = GenerateSqlScript.WorkOrderToSqlInsertScript(workOrder);
 
+           Console.WriteLine("Connecting to SQL database");
             var script2 = InsertIntoSql.WorkOrderInsert(workOrder);
 
             //var json = JsonConvert.SerializeObject(workOrder);

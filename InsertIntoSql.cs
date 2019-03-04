@@ -50,19 +50,7 @@ namespace Company.Function
                     
                     command.Connection.Close();
 
-                    //using (SqlCommand command = new SqlCommand(script, connection))
-                    //{
-                        
-                        //using (SqlDataReader reader = command.ExecuteReader())
-                        //{
-                        //  while (reader.Read())
-                        //                            {
-                        //                              Console.WriteLine("{0} {1}", reader.GetString(0), reader.GetString(1));
-                        //                        }
-                        //                  }
-                   // }       
-
-                
+                            
                     }
                 }
 
@@ -79,9 +67,6 @@ namespace Company.Function
             
             }
             Console.WriteLine("\nDone. Press enter.");
-            Console.ReadLine(); 
-        
-      
 
             return "true";
         }
