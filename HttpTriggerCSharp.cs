@@ -19,26 +19,17 @@ namespace Company.Function
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            string name = req.Query["name"];
-
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            // dynamic data = JsonConvert.DeserializeObject(requestBody);
-            // name = name ?? data?.name;
 
             var workOrder = ParseTextIntoObject.TextToParse(requestBody);
 
-            //var script = GenerateSqlScript.WorkOrderToSqlInsertScript(workOrder);
-
             var numberOfInsertedRows = InsertIntoSql.WorkOrderInsert(workOrder);
-            //var json = JsonConvert.SerializeObject(workOrder);
 
             return numberOfInsertedRows != 0 ?
             (ActionResult)new OkObjectResult("Inserted " + numberOfInsertedRows + " rows.")
                     :
                 new BadRequestObjectResult("Did not insert any rows");
-            //return script != null
-            //             ? (ActionResult)new OkObjectResult(script)
-            //                : new BadRequestObjectResult("something went wrong");
+
         }
     }
 }
