@@ -1,0 +1,8 @@
+{
+    "IsEncrypted": false,
+    "Values": {
+        "AzureWebJobsStorage": "",
+        "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+        "sqldb_connection": "Server=tcp:dco-tools.database.windows.net,1433;Initial Catalog=repo;Persist Security Info=False;User ID=sql_azure_function_user_login;Password=24Password24#;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+    }
+}
