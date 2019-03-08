@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-
 namespace Company.Function
 {
     public static class HttpTriggerCSharp
