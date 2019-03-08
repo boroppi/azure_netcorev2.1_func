@@ -7,8 +7,11 @@ namespace Company.Function
 {
     public static class InsertIntoSql
     {
-        public static string WorkOrderInsert(WorkOrder workOrder)
+        public static int WorkOrderInsert(WorkOrder workOrder)
         {
+            string script = "";
+            int rows = 0;
+
             try
             {
                 Console.WriteLine("\nConnecting to SQL database");
@@ -16,12 +19,13 @@ namespace Company.Function
 
                 var connStr = Environment.GetEnvironmentVariable("sqldb_connection");
 
+                Console.WriteLine($"CONNECTION STRING: {connStr}");
+
                 using (SqlConnection connection = new SqlConnection(connStr))
                 {
                     connection.Open();
 
-                    string script = "";
-                    //int rows = 0;
+
 
                     foreach (var server in workOrder.RequestDetails.Servers)
                     {
@@ -31,7 +35,7 @@ namespace Company.Function
                             using (SqlCommand cmd = new SqlCommand(script, connection))
                             {
                                 // Execute the command and log the # rows affected.
-                                var rows = cmd.ExecuteNonQuery();
+                                rows = cmd.ExecuteNonQuery();
                                 Console.WriteLine($"{rows} rows were updated");
                             }
                         }
@@ -44,7 +48,7 @@ namespace Company.Function
             }
             Console.WriteLine("\nDone. Press enter.");
 
-            return "true";
+            return rows;
         }
     }
 }

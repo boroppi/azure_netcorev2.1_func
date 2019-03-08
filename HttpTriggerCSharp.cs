@@ -27,16 +27,18 @@ namespace Company.Function
 
             var workOrder = ParseTextIntoObject.TextToParse(requestBody);
 
-            var script = GenerateSqlScript.WorkOrderToSqlInsertScript(workOrder);
+            //var script = GenerateSqlScript.WorkOrderToSqlInsertScript(workOrder);
 
+            var numberOfInsertedRows = InsertIntoSql.WorkOrderInsert(workOrder);
             //var json = JsonConvert.SerializeObject(workOrder);
 
-            return script != null
-                         ? (ActionResult)new OkObjectResult(script)
-                            : new BadRequestObjectResult("something went wrong");
-            //  return name != null
-            //    ? (ActionResult)new OkObjectResult($"Hello, {name}")
-            //   : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
+            return numberOfInsertedRows != 0 ?
+            (ActionResult)new OkObjectResult("Inserted " + numberOfInsertedRows + " rows.")
+                    :
+                new BadRequestObjectResult("Did not insert any rows");
+            //return script != null
+            //             ? (ActionResult)new OkObjectResult(script)
+            //                : new BadRequestObjectResult("something went wrong");
         }
     }
 }
