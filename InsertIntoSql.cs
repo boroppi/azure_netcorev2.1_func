@@ -7,54 +7,40 @@ namespace Company.Function
 {
     public static class InsertIntoSql
     {
-
-        public static string WorkOrderInsert(WorkOrder workOrder) 
+        public static string WorkOrderInsert(WorkOrder workOrder)
         {
-
-            try 
-            { 
+            try
+            {
                 Console.WriteLine("\nConnecting to SQL database");
-               // log.LogInformation($"Connecting to SQL database");
-                
-                var str = Environment.GetEnvironmentVariable("sqldb_connection");
+                // log.LogInformation($"Connecting to SQL database");
 
-                using (SqlConnection connection = new SqlConnection(str))
-                 {
+                var connStr = Environment.GetEnvironmentVariable("sqldb_connection");
 
-                connection.Open(); 
-
-                string script = "";
-               //int rows = 0;
-            
-
-                foreach (var server in workOrder.RequestDetails.Servers)
+                using (SqlConnection connection = new SqlConnection(connStr))
                 {
-                    foreach (var user in workOrder.RequestDetails.Users)
+                    connection.Open();
+
+                    string script = "";
+                    //int rows = 0;
+
+                    foreach (var server in workOrder.RequestDetails.Servers)
                     {
-                    
-                        script = $"INSERT INTO [dbo].[Process] ([server],[user_name],[role],[action]) VALUES ('{server.Name}','{user.Name}','{workOrder.RequestDetails.Role}','ADD')";
-                        using (SqlCommand cmd = new SqlCommand(script, connection))
-                    
+                        foreach (var user in workOrder.RequestDetails.Users)
                         {
-                        // Execute the command and log the # rows affected.
-                        var rows = cmd.ExecuteNonQuery();
-                        Console.WriteLine ($"{rows} rows were updated");
-                        }             
-                            
+                            script = $"INSERT INTO [dbo].[Process] ([server],[user_name],[role],[action]) VALUES ('{server.Name}','{user.Name}','{workOrder.RequestDetails.Role}','ADD')";
+                            using (SqlCommand cmd = new SqlCommand(script, connection))
+                            {
+                                // Execute the command and log the # rows affected.
+                                var rows = cmd.ExecuteNonQuery();
+                                Console.WriteLine($"{rows} rows were updated");
+                            }
+                        }
                     }
                 }
-
-
-
-
-
-
-                 }
             }
             catch (SqlException e)
             {
                 Console.WriteLine(e.ToString());
-            
             }
             Console.WriteLine("\nDone. Press enter.");
 
