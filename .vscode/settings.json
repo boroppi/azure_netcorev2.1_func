@@ -4,5 +4,9 @@
   "azureFunctions.templateFilter": "Verified",
   "azureFunctions.deploySubpath": "bin/Release/netcoreapp2.1/publish",
   "azureFunctions.preDeployTask": "publish",
+<<<<<<< HEAD
+=======
+  "azureFunctions.pickProcessTimeout": 200,
+>>>>>>> 63d98c5f8f5d84ebc9254e28400443074f338be1
   "debug.internalConsoleOptions": "neverOpen"
 }

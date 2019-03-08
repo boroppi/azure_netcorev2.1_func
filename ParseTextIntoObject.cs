@@ -50,7 +50,6 @@ namespace Company.Function
                 requestDetail.ClusterName = cluster_name;
                 requestDetail.Role = role;
 
-
                 // Servers array to object
                 servers = RegexFind.Split(servers, server_trim_label_expr)[1];
                 string[] arrServers = RegexFind.Split(servers, servers_split_expr);
