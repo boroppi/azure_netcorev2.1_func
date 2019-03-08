@@ -46,8 +46,10 @@ namespace Company.Function
             {
                 Console.WriteLine(e.ToString());
             }
-            Console.WriteLine("\nDone. Press enter.");
-
+            finally
+            {
+                Console.WriteLine($"Inserted {rows} rows to the DB");
+            }
             return rows; // if everyting goes well it should response back the number of rows inserted
         }
     }
