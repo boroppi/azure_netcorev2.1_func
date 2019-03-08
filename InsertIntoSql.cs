@@ -9,7 +9,6 @@ namespace Company.Function
     {
         public static int WorkOrderInsert(WorkOrder workOrder)
         {
-            string script = "";
             int rows = 0;
 
             try
@@ -19,36 +18,37 @@ namespace Company.Function
 
                 var connStr = Environment.GetEnvironmentVariable("sqldb_connection");
 
-                Console.WriteLine($"CONNECTION STRING: {connStr}");
-
                 using (SqlConnection connection = new SqlConnection(connStr))
                 {
                     connection.Open();
 
+                    var scriptLines = GenerateSqlScript.WorkOrderToSqlInsertScript(workOrder);
 
-
-                    foreach (var server in workOrder.RequestDetails.Servers)
+                    foreach (var scriptLine in scriptLines)
                     {
-                        foreach (var user in workOrder.RequestDetails.Users)
+                        var command = new SqlCommand(scriptLine, connection); // script to be run
+
+                        var transaction = connection.BeginTransaction(); // add a transaction object to connection
+                        command.Transaction = transaction;
+
+                        rows = command.ExecuteNonQuery(); // run the query set the number of rows inserted to rows variable
+
+                        try { transaction.Commit(); } // Here the execution is committed to the DB
+                        catch (Exception e)
                         {
-                            script = $"INSERT INTO [dbo].[Process] ([server],[user_name],[role],[action]) VALUES ('{server.Name}','{user.Name}','{workOrder.RequestDetails.Role}','ADD')";
-                            using (SqlCommand cmd = new SqlCommand(script, connection))
-                            {
-                                // Execute the command and log the # rows affected.
-                                rows = cmd.ExecuteNonQuery();
-                                Console.WriteLine($"{rows} rows were updated");
-                            }
+                            transaction.Rollback(); // Rollback changes if any error occurs
+                            Console.WriteLine(e.Message);
                         }
                     }
                 }
             }
-            catch (SqlException e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
             }
             Console.WriteLine("\nDone. Press enter.");
 
-            return rows;
+            return rows; // if everyting goes well it should response back the number of rows inserted
         }
     }
 }
