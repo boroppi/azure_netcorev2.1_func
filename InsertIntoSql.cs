@@ -31,7 +31,7 @@ namespace Company.Function
                         var transaction = connection.BeginTransaction(); // add a transaction object to connection
                         command.Transaction = transaction;
 
-                        rows = command.ExecuteNonQuery(); // run the query set the number of rows inserted to rows variable
+                        rows += command.ExecuteNonQuery(); // run the query set the number of rows inserted to rows variable
 
                         try { transaction.Commit(); } // Here the execution is committed to the DB
                         catch (Exception e)

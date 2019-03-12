@@ -20,7 +20,10 @@ namespace Company.Function
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-
+            if (!requestBody.Contains("Administrative Account Management Service (AAMS)"))
+            {
+                return new BadRequestObjectResult("Wrong WorkOrder Summary");
+            }
             var workOrder = ParseTextIntoObject.TextToParse(requestBody);
 
             var numberOfInsertedRows = InsertIntoSql.WorkOrderInsert(workOrder);
