@@ -42,6 +42,7 @@ namespace Company.Function
                     }
                 }
             }
+            // TODO We need to insert errros to the DB
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
