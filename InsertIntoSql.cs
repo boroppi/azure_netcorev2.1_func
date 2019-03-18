@@ -7,6 +7,11 @@ namespace Company.Function
 {
     public static class InsertIntoSql
     {
+        public enum LogType
+        {
+            error,
+            information
+        }
         public static int WorkOrderInsert(WorkOrder workOrder)
         {
             int rows = 0;
@@ -52,6 +57,46 @@ namespace Company.Function
                 Console.WriteLine($"Inserted {rows} rows to the DB");
             }
             return rows; // if everyting goes well it should response back the number of rows inserted
+        }
+
+        public static int Log(string error, string emailBody, LogType logType)
+        {
+            int rowInserted = 0;
+            var connStr = Environment.GetEnvironmentVariable("sqldb_connection");
+            string _logType = "";
+            switch (logType)
+            {
+                case LogType.error:
+                    _logType = "Error";
+                    break;
+                case LogType.information:
+                    _logType = "Information";
+                    break;
+            }
+            using (SqlConnection connection = new SqlConnection(connStr))
+            {
+                connection.Open();
+
+                var query = $"INSERT INTO dbo.Process_Log (log_type, error_msg, email_body) VALUES ('{_logType}', '{error}', '{emailBody}')";
+
+
+                var command = new SqlCommand(query, connection); // script to be run
+
+                var transaction = connection.BeginTransaction(); // add a transaction object to connection
+                command.Transaction = transaction;
+
+                rowInserted = command.ExecuteNonQuery(); // run the query set the number of rows inserted to rows variable
+
+                try { transaction.Commit(); } // Here the execution is committed to the DB
+                catch (Exception e)
+                {
+                    transaction.Rollback(); // Rollback changes if any error occurs
+                    Console.WriteLine(e.Message);
+                }
+
+                return rowInserted;
+
+            }
         }
     }
 }

@@ -81,6 +81,7 @@ namespace Company.Function
             catch (System.Exception e)
             {
                 System.Console.WriteLine($"ERROR: {e.Message}");
+                InsertIntoSql.Log($"Error while parsing the email body: {e.Message}", text, InsertIntoSql.LogType.error);
                 throw e;
             }
         }

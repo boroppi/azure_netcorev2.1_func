@@ -17,7 +17,6 @@ namespace Company.Function
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "parse-email")] HttpRequest req,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             if (!requestBody.Contains("Administrative Account Management Service (AAMS)"))
@@ -27,6 +26,12 @@ namespace Company.Function
             var workOrder = ParseTextIntoObject.TextToParse(requestBody);
 
             var numberOfInsertedRows = InsertIntoSql.WorkOrderInsert(workOrder);
+
+            if (numberOfInsertedRows > 0)
+                log.LogInformation($"C# HTTP trigger function processed a request. WO:{workOrder.WorkOrderId} inserted {numberOfInsertedRows} rows.");
+            else
+                log.LogError($"C# HTTP trigger function failed to process a request. WO:{workOrder.WorkOrderId}");
+
 
             return numberOfInsertedRows != 0 ?
             (ActionResult)new OkObjectResult("Inserted " + numberOfInsertedRows + " rows.")
