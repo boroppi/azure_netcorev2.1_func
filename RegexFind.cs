@@ -6,7 +6,7 @@ namespace Company.Function
     {
         public static string FindString(string text, string pattern, string searchingFor = null)
         {
-            Match m = Regex.Match(text, pattern, System.Text.RegularExpressions.RegexOptions.ECMAScript | RegexOptions.IgnoreCase);
+            Match m = Regex.Match(text, pattern, RegexOptions.Multiline | RegexOptions.IgnoreCase);
             System.Console.WriteLine($"Text: {text}, Pattern: {pattern}");
 
             if (m.Success)

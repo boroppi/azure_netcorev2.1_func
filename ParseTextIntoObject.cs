@@ -7,17 +7,17 @@ namespace Company.Function
         public static WorkOrder TextToParse(string text)
         {
             const string workorder_expr = @"Work Order.([^\.]*)";
-            const string approved_by_name_expr = @"Approved by:[\n\r].*Name:\s*([^\n\r]*)";
-            const string approved_by_email_expr = @"Approved by:[\n\r].*[\n\r]*Email:\s*([^\n\r]*)";
-            const string requester_name_expr = @"Requester:[\n\r].*Name:\s*([^\n\r]*)";
-            const string requester_email_expr = @"Requester:[\n\r].*[\n\r]*Email:\s*([^\n\r]*)";
-            const string item_requested_expr = @"\s*Item requested:\s*([^\n\r]*)";
-            const string request_type_expr = @"\s*Request type:\s*([^\n\r]*)";
-            const string cluster_name_expr = @"\s*Cluster Name:\s*([^\n\r]*)";
-            const string role_expr = @"\s*Role:\s*([^\n\r]*)";
+            const string approved_by_name_expr = @"Approved by:[\r\n]{1,2}.*Name:\s*([^\r\n]*)";
+            const string approved_by_email_expr = @"Approved by:[\r\n]{1,2}.*[\r\n]{1,2}Email:\s*([^\r\n]*)";
+            const string requester_name_expr = @"Requester:[\r\n]{1,2}.*Name:\s*([^\r\n]*)";
+            const string requester_email_expr = @"Requester:[\r\n]{1,2}.*[\r\n]{1,2}Email:\s*([^\r\n]*)";
+            const string item_requested_expr = @"\s*Item requested:\s*([^\r\n]*)";
+            const string request_type_expr = @"\s*Request type:\s*([^\r\n]*)";
+            const string cluster_name_expr = @"\s*Cluster Name:\s*([^\r\n]*)";
+            const string role_expr = @"\s*Role:\s*([^\r\n]*)";
             const string servers_expr = @"\s*Server\(s\) to be added:[\s\w,]*(?=\nUser)";
-            const string users_expr = @"\s*User\(s\) to be added:\s*([^\n\r]*)";
-            const string cost_centre_expr = @"\s*Cost Centre:\s*([^\n\r]*)";
+            const string users_expr = @"\s*User\(s\) to be added:\s*([^\r\n]*)";
+            const string cost_centre_expr = @"\s*Cost Centre:\s*([^\r\n]*)";
             const string server_trim_label_expr = @"\s*Server\(s\) to be added:\s*";
             const string servers_split_expr = @"\s*,\s*";
             const string users_split_expr = @"(?<=\))\,\s";
