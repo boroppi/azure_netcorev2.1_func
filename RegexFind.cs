@@ -24,6 +24,7 @@ namespace Company.Function
             else
             {
                 System.Console.WriteLine($"Error: could not find {searchingFor}");
+                InsertIntoSql.Log($"Error: could not find {searchingFor}", text, InsertIntoSql.LogType.error);
                 throw new System.Exception($"Error: could not find {searchingFor}");
             }
 
