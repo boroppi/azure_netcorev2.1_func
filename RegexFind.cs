@@ -41,7 +41,7 @@ namespace Company.Function
             catch (System.Exception e)
             {
                 System.Console.WriteLine(e.Message);
-                InsertIntoSql.Log($"Error: could not split for WO: {workOrderID}", input, InsertIntoSql.LogType.error);
+                InsertIntoSql.Log($"Error: could not split for WO: {workOrderId}", input, InsertIntoSql.LogType.error);
                 throw e;
             }
         }
