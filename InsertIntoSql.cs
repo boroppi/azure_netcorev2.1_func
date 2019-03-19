@@ -7,6 +7,7 @@ namespace Company.Function
 {
     public static class InsertIntoSql
     {
+        public static ILogger _Log { get; set; }
         public enum LogType
         {
             error,
@@ -18,20 +19,20 @@ namespace Company.Function
 
             try
             {
-                Console.WriteLine("\nConnecting to SQL database");
-                // log.LogInformation($"Connecting to SQL database");
-
+                //Grab connection string from local.settings.json
                 var connStr = Environment.GetEnvironmentVariable("sqldb_connection");
 
                 using (SqlConnection connection = new SqlConnection(connStr))
                 {
                     connection.Open();
 
+                    // Generate scripts to run
                     var scriptLines = GenerateSqlScript.WorkOrderToSqlInsertScript(workOrder);
 
+                    // Loop through each line of script
                     foreach (var scriptLine in scriptLines)
                     {
-                        var command = new SqlCommand(scriptLine, connection); // script to be run
+                        var command = new SqlCommand(scriptLine, connection); // command to be run
 
                         var transaction = connection.BeginTransaction(); // add a transaction object to connection
                         command.Transaction = transaction;
@@ -42,6 +43,8 @@ namespace Company.Function
                         catch (Exception e)
                         {
                             transaction.Rollback(); // Rollback changes if any error occurs
+                            _Log.LogError($"Error: had to Rollback inserting into the DB due to: {e.Message}. WO:{workOrder.WorkOrderId}");
+                            InsertIntoSql.Log($"Error: had to Rollback inserting into the DB due to: {e.Message}.", string.Join("\n", scriptLines), InsertIntoSql.LogType.error);
                             Console.WriteLine(e.Message);
                         }
                     }
@@ -51,6 +54,8 @@ namespace Company.Function
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
+                InsertIntoSql.Log($"Error: {e.Message}.", workOrder.WorkOrderId, InsertIntoSql.LogType.error);
+
             }
             finally
             {
@@ -92,10 +97,10 @@ namespace Company.Function
                 {
                     transaction.Rollback(); // Rollback changes if any error occurs
                     Console.WriteLine(e.Message);
+                    _Log.LogError($"Error: had to Rollback error logging into the DB due to: {e.Message}. emailBody:{emailBody}");
                 }
 
                 return rowInserted;
-
             }
         }
     }
