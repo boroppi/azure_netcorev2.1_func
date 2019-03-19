@@ -32,7 +32,7 @@ namespace Company.Function
             return m.Value;
         }
 
-        public static string[] Split(string input, string pattern)
+        public static string[] Split(string input, string pattern, string workOrderId)
         {
             try
             {
@@ -41,6 +41,7 @@ namespace Company.Function
             catch (System.Exception e)
             {
                 System.Console.WriteLine(e.Message);
+                InsertIntoSql.Log($"Error: could not split for WO: {workOrderID}", input, InsertIntoSql.LogType.error);
                 throw e;
             }
         }

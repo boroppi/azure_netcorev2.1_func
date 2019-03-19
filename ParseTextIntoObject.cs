@@ -51,8 +51,8 @@ namespace Company.Function
                 requestDetail.Role = role;
 
                 // Servers array to object
-                servers = RegexFind.Split(servers, server_trim_label_expr)[1];
-                string[] arrServers = RegexFind.Split(servers, servers_split_expr);
+                servers = RegexFind.Split(servers, server_trim_label_expr, workorder_id)[1];
+                string[] arrServers = RegexFind.Split(servers, servers_split_expr, workorder_id);
                 foreach (var server in arrServers)
                 {
                     requestDetail.Servers.Add(new Server { Name = server });
@@ -62,11 +62,11 @@ namespace Company.Function
                 string[] arrUsers;
                 if (users.Contains('(') && users.Contains(')'))
                 {
-                    arrUsers = RegexFind.Split(users, users_split_expr);
+                    arrUsers = RegexFind.Split(users, users_split_expr, workorder_id);
                 }
                 else
                 {
-                    arrUsers = RegexFind.Split(users, users_with_no_department_split_expr);
+                    arrUsers = RegexFind.Split(users, users_with_no_department_split_expr, workorder_id);
                 }
                 foreach (var user in arrUsers)
                 {
