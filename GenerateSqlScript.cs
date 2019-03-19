@@ -13,7 +13,7 @@ namespace Company.Function
             {
                 foreach (var user in workOrder.RequestDetails.Users)
                 {
-                    scriptLines.Add($"INSERT INTO [dbo].[Process] ([server],[user_name],[role],[action], [work_order_id]) VALUES ('{server.Name}','{user.Name}','{workOrder.RequestDetails.Role}','ADD', {workOrder.WorkOrderId});");
+                    scriptLines.Add($"INSERT INTO [dbo].[Process] ([server],[user_name],[role],[action], [work_order_id]) VALUES ('{server.Name}','{user.Name}','{workOrder.RequestDetails.Role}','ADD', '{workOrder.WorkOrderId}');");
                 }
             }
 
