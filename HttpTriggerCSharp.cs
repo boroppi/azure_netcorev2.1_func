@@ -22,6 +22,7 @@ namespace Company.Function
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             if (!requestBody.Contains("Administrative Account Management Service (AAMS)"))
             {
+                InsertIntoSql.Log("generic email detected, not a AAMS request not processing.", requestBody, InsertIntoSql.LogType.error);
                 return new BadRequestObjectResult("Wrong WorkOrder Summary");
             }
             var workOrder = ParseTextIntoObject.TextToParse(requestBody);
