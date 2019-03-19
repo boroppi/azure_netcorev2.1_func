@@ -39,13 +39,17 @@ namespace Company.Function
 
                         rows += command.ExecuteNonQuery(); // run the query set the number of rows inserted to rows variable
 
+
+
                         try { transaction.Commit(); } // Here the execution is committed to the DB
                         catch (Exception e)
                         {
+                            string message = e.Message.Replace("'", "''");
                             transaction.Rollback(); // Rollback changes if any error occurs
-                            _Log.LogError($"Error: had to Rollback inserting into the DB due to: {e.Message}. WO:{workOrder.WorkOrderId}");
-                            InsertIntoSql.Log($"Error: had to Rollback inserting into the DB due to: {e.Message}.", string.Join("\n", scriptLines), InsertIntoSql.LogType.error);
-                            Console.WriteLine(e.Message);
+                            _Log.LogError($"Error: had to Rollback inserting into the DB due to: {message}. WO:{workOrder.WorkOrderId}");
+                            Log($"Error: had to Rollback inserting into the DB due to: {message}.", string.Join("\n", scriptLines), LogType.error);
+                            Console.WriteLine(message);
+                            throw e;
                         }
                     }
                 }
@@ -53,8 +57,9 @@ namespace Company.Function
             // TODO We need to insert errros to the DB
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
-                InsertIntoSql.Log($"Error: {e.Message}.", workOrder.WorkOrderId, InsertIntoSql.LogType.error);
+                string message = e.Message.Replace("'", "''");
+                Console.WriteLine(message);
+                Log($"Error: {message}.", workOrder.WorkOrderId, LogType.error);
 
             }
             finally
@@ -84,13 +89,23 @@ namespace Company.Function
 
                 var query = $"INSERT INTO dbo.Process_Log (log_type, error_msg, email_body) VALUES ('{_logType}', '{error}', '{emailBody}')";
 
+                System.Console.WriteLine("@@@\n" + query + "\n@@@");
 
                 var command = new SqlCommand(query, connection); // script to be run
 
                 var transaction = connection.BeginTransaction(); // add a transaction object to connection
                 command.Transaction = transaction;
 
-                rowInserted = command.ExecuteNonQuery(); // run the query set the number of rows inserted to rows variable
+                try
+                {
+                    rowInserted = command.ExecuteNonQuery(); // run the query set the number of rows inserted to rows variable
+
+                }
+                catch (System.Exception e)
+                {
+                    System.Console.WriteLine("+++" + e.Message + "+++");
+                    throw e;
+                }
 
                 try { transaction.Commit(); } // Here the execution is committed to the DB
                 catch (Exception e)
