@@ -17,9 +17,8 @@ namespace Company.Function
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "parse-email")] HttpRequest req,
             ILogger log)
         {
-            // InsertIntoSql._Log = log;
-            var connStr = Environment.GetEnvironmentVariable("sqldb_connection", EnvironmentVariableTarget.Process);
-            log.LogInformation(connStr);
+            InsertIntoSql._Log = log;
+
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             if (!requestBody.Contains("Administrative Account Management Service (AAMS)"))
             {
