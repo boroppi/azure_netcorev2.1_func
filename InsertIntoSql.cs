@@ -7,7 +7,6 @@ namespace Company.Function
 {
     public static class InsertIntoSql
     {
-        public static ILogger _Log { get; set; }
         public enum LogType
         {
             error,
@@ -46,7 +45,6 @@ namespace Company.Function
                         {
                             string message = e.Message.Replace("'", "''");
                             transaction.Rollback(); // Rollback changes if any error occurs
-                            _Log.LogError($"Error: had to Rollback inserting into the DB due to: {message}. WO:{workOrder.WorkOrderId}");
                             Log($"Error: had to Rollback inserting into the DB due to: {message}.", string.Join("\n", scriptLines), LogType.error);
                             Console.WriteLine(message);
                             throw e;
@@ -112,7 +110,6 @@ namespace Company.Function
                 {
                     transaction.Rollback(); // Rollback changes if any error occurs
                     Console.WriteLine(e.Message);
-                    _Log.LogError($"Error: had to Rollback error logging into the DB due to: {e.Message}. emailBody:{emailBody}");
                 }
 
                 return rowInserted;
