@@ -18,7 +18,8 @@ namespace Company.Function
             ILogger log)
         {
             // InsertIntoSql._Log = log;
-
+            var connStr = Environment.GetEnvironmentVariable("sqldb_connection", EnvironmentVariableTarget.Process);
+            log.LogInformation(connStr);
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             if (!requestBody.Contains("Administrative Account Management Service (AAMS)"))
             {
