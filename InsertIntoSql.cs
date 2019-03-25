@@ -19,7 +19,8 @@ namespace Company.Function
 
             try
             {
-                //Grab connection string from local.settings.json
+                // Grab connection string from local.settings.json
+                // Azure functionn actually grabs it from the applciation settings variables inside azure portal
                 var connStr = Environment.GetEnvironmentVariable("sqldb_connection");
 
                 using (SqlConnection connection = new SqlConnection(connStr))
