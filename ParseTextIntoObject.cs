@@ -16,7 +16,7 @@ namespace Company.Function
             const string cluster_name_expr = @"\s*Cluster Name:\s*([^\r\n]*)";
             const string role_expr = @"\s*Role:\s*([^\r\n]*)";
             const string servers_expr = @"\s*Server\(s\) to be added:[\s\w,]*(?=\nUser)";
-            const string users_expr = @"\s*User\(s\) to be added:\s*([^\r\n]*)";
+            const string users_expr = @"\s*User\(s\) to be added:[\s\w,()]*(?=\nPayment)";
             const string cost_centre_expr = @"\s*Cost Centre:\s*([^\r\n]*)";
             const string server_trim_label_expr = @"\s*Server\(s\) to be added:\s*";
             const string servers_split_expr = @"\s*,\s*";

@@ -20,14 +20,14 @@ namespace Company.Function
             InsertIntoSql._Log = log;
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            if (requestBody.Length < 50)
+            if (!requestBody.Contains("Work Order"))
             {
-                InsertIntoSql.Log("request body's length is less than 50. Probably Empty request body", requestBody, InsertIntoSql.LogType.error);
-                return new BadRequestObjectResult("Empty / Short request body");
+                InsertIntoSql.Log("Probably Empty request body or does not contain work order", "", InsertIntoSql.LogType.error);
+                return new BadRequestObjectResult("Empty / Short request body or no Work Order");
             }
             else if (!requestBody.Contains("Administrative Account Management Service (AAMS)"))
             {
-                InsertIntoSql.Log("generic email detected, not a AAMS request not processing.", requestBody, InsertIntoSql.LogType.error);
+                InsertIntoSql.Log("generic email detected, not a AAMS request not processing.", RegexFind.FindString(requestBody, @"Work Order.([^\.]*)", "work order"), InsertIntoSql.LogType.error);
                 return new BadRequestObjectResult("Wrong WorkOrder Summary");
             }
             var workOrder = ParseTextIntoObject.TextToParse(requestBody);
