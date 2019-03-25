@@ -19,7 +19,7 @@ namespace Company.Function
             try
             {
                 //Grab connection string from local.settings.json
-                var connStr = Environment.GetEnvironmentVariable("sqldb_connection");
+                var connStr = Environment.GetEnvironmentVariable("sqldb_connection", EnvironmentVariableTarget.Process);
 
                 using (SqlConnection connection = new SqlConnection(connStr))
                 {
