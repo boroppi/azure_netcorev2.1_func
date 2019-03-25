@@ -19,6 +19,7 @@ namespace Company.Function
             const string users_expr = @"\s*User\(s\) to be added:[\s\w,()]*(?=\nPayment)";
             const string cost_centre_expr = @"\s*Cost Centre:\s*([^\r\n]*)";
             const string server_trim_label_expr = @"\s*Server\(s\) to be added:\s*";
+            const string user_trim_label_expr = @"\s*User\(s\) to be added:\s*";
             const string servers_split_expr = @"\s*,\s*";
             const string users_split_expr = @"(?<=\))\,\s";
             const string users_with_no_department_split_expr = @"\s*,\s*";
@@ -59,6 +60,7 @@ namespace Company.Function
                 }
 
                 // Users array to object
+                users = RegexFind.Split(users, user_trim_label_expr, workorder_id)[1];
                 string[] arrUsers;
                 if (users.Contains('(') && users.Contains(')'))
                 {
