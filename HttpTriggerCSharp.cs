@@ -20,7 +20,12 @@ namespace Company.Function
             InsertIntoSql._Log = log;
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            if (!requestBody.Contains("Administrative Account Management Service (AAMS)"))
+            if (requestBody.Length < 50)
+            {
+                InsertIntoSql.Log("request body's length is less than 50. Probably Empty request body", requestBody, InsertIntoSql.LogType.error);
+                return new BadRequestObjectResult("Empty / Short request body");
+            }
+            else if (!requestBody.Contains("Administrative Account Management Service (AAMS)"))
             {
                 InsertIntoSql.Log("generic email detected, not a AAMS request not processing.", requestBody, InsertIntoSql.LogType.error);
                 return new BadRequestObjectResult("Wrong WorkOrder Summary");
