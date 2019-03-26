@@ -44,6 +44,12 @@ namespace Company.Function
                 throw e;
             }
         }
+
+        public static string TrimAndRemoveNewLines(string input)
+        {
+
+            return Regex.Replace(input, @"\r\n?|\n", "");
+        }
     }
 
 

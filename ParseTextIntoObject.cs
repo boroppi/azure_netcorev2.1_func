@@ -1,5 +1,6 @@
 using System;
 
+
 namespace Company.Function
 {
     public static class ParseTextIntoObject
@@ -27,11 +28,11 @@ namespace Company.Function
             try
             {
                 var workorder_id = RegexFind.FindString(text, workorder_expr, "work order");
-                workorder_id = TrimAndRemoveNewLines(workorder_id);
+                workorder_id = RegexFind.TrimAndRemoveNewLines(workorder_id);
                 var approved_by_name = RegexFind.FindString(text, approved_by_name_expr, "approver name");
-                approved_by_name = TrimAndRemoveNewLines(approved_by_name);
+                approved_by_name = RegexFind.TrimAndRemoveNewLines(approved_by_name);
                 var approved_by_email = RegexFind.FindString(text, approved_by_email_expr, "approver email");
-                approved_by_email = TrimAndRemoveNewLines(approved_by_email);
+                approved_by_email = RegexFind.TrimAndRemoveNewLines(approved_by_email);
                 var requester_name = RegexFind.FindString(text, requester_name_expr, "requester name");
                 var requester_email = RegexFind.FindString(text, requester_email_expr, "requester email");
                 var item_requested = RegexFind.FindString(text, item_requested_expr, "item requested");
@@ -59,7 +60,7 @@ namespace Company.Function
                 string[] arrServers = RegexFind.Split(servers, servers_split_expr, workorder_id);
                 foreach (var server in arrServers)
                 {
-                    requestDetail.Servers.Add(new Server { Name = TrimAndRemoveNewLines(server) });
+                    requestDetail.Servers.Add(new Server { Name = RegexFind.TrimAndRemoveNewLines(server) });
                 }
 
                 // Users array to object
@@ -75,7 +76,7 @@ namespace Company.Function
                 }
                 foreach (var user in arrUsers)
                 {
-                    requestDetail.Users.Add(new User { Name = TrimAndRemoveNewLines(user) });
+                    requestDetail.Users.Add(new User { Name = RegexFind.TrimAndRemoveNewLines(user) });
                 }
 
 
@@ -93,9 +94,6 @@ namespace Company.Function
             }
         }
 
-        public static string TrimAndRemoveNewLines(string input)
-        {
-            return input.Trim().Replace(System.Environment.NewLine, "");
-        }
+
     }
 }
