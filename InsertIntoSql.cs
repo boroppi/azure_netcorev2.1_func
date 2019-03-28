@@ -40,8 +40,6 @@ namespace Company.Function
 
                         rows += command.ExecuteNonQuery(); // run the query set the number of rows inserted to rows variable
 
-
-
                         try { transaction.Commit(); } // Here the execution is committed to the DB
                         catch (Exception e)
                         {
@@ -61,7 +59,6 @@ namespace Company.Function
                 string message = e.Message.Replace("'", "''");
                 Console.WriteLine(message);
                 Log($"Error: {message}.", workOrder.WorkOrderId, LogType.error);
-
             }
             finally
             {
@@ -90,8 +87,6 @@ namespace Company.Function
 
                 var query = $"INSERT INTO dbo.Process_Log (log_type, error_msg, email_body) VALUES ('{_logType}', '{error}', '{emailBody}')";
 
-                System.Console.WriteLine("@@@\n" + query + "\n@@@");
-
                 var command = new SqlCommand(query, connection); // script to be run
 
                 var transaction = connection.BeginTransaction(); // add a transaction object to connection
@@ -100,11 +95,9 @@ namespace Company.Function
                 try
                 {
                     rowInserted = command.ExecuteNonQuery(); // run the query set the number of rows inserted to rows variable
-
                 }
                 catch (System.Exception e)
                 {
-                    System.Console.WriteLine("+++" + e.Message + "+++");
                     throw e;
                 }
 
