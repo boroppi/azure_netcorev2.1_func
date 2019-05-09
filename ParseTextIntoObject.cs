@@ -17,7 +17,7 @@ namespace Company.Function
             const string cluster_name_expr = @"\s*Cluster Name:\s*([^\r\n]*)";
             const string role_expr = @"\s*Role:\s*([^\r\n]*)";
             const string servers_expr = @"\s*Server\(s\) to be added:[\s\w,]*(?=\nUser)";
-            const string users_expr = @"\s*User\(s\) to be added:[\s\w,()]*(?=\nPayment)";
+            const string users_expr = @"\s*User\(s\) to be added:[\s\w,.()]*(?=\nPayment)";
             const string cost_centre_expr = @"\s*Cost Centre:\s*([^\r\n]*)";
             const string server_trim_label_expr = @"\s*Server\(s\) to be added:\s*";
             const string user_trim_label_expr = @"\s*User\(s\) to be added:\s*";
@@ -57,6 +57,7 @@ namespace Company.Function
 
                 // Servers array to object
                 servers = RegexFind.Split(servers, server_trim_label_expr, workorder_id)[1];
+                servers= servers.Replace("\n", ",");
                 string[] arrServers = RegexFind.Split(servers, servers_split_expr, workorder_id);
                 foreach (var server in arrServers)
                 {
